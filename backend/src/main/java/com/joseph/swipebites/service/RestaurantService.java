@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import com.joseph.swipebites.dto.RestaurantRequest;
+import com.joseph.swipebites.exception.RestaurantNotFoundException;
 import com.joseph.swipebites.model.Restaurant;
 import com.joseph.swipebites.repository.RestaurantRepository;
 
@@ -18,5 +20,21 @@ public class RestaurantService {
 
     public List<Restaurant> getRestaurants() {
         return restaurantRepository.findAll();
+    }
+
+    public Restaurant getRestaurantById(Long id) {
+        return restaurantRepository.findById(id)
+            .orElseThrow(() -> new RestaurantNotFoundException(id));
+    }
+
+    public Restaurant createRestaurant(RestaurantRequest request) {
+
+        Restaurant restaurant = new Restaurant(
+                request.getName(),
+                request.getCuisine(),
+                request.getPriceRange()
+        );
+
+        return restaurantRepository.save(restaurant);
     }
 }
