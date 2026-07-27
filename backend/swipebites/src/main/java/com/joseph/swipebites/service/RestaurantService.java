@@ -5,14 +5,18 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.model.Restaurant;
+import com.joseph.swipebites.repository.RestaurantRepository;
 
 @Service
 public class RestaurantService {
 
+    private final RestaurantRepository restaurantRepository;
+
+    public RestaurantService(RestaurantRepository restaurantRepository) {
+        this.restaurantRepository = restaurantRepository;
+    }
+
     public List<Restaurant> getRestaurants() {
-        return List.of(
-            new Restaurant(1L, "Mario's Pizza", "Italian", "$$"),
-            new Restaurant(2L, "Sushi House", "Japanese", "$$$")
-        );
+        return restaurantRepository.findAll();
     }
 }
