@@ -24,7 +24,7 @@ public class RestaurantService {
 
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id)
-            .orElseThrow(() -> new RestaurantNotFoundException(id));
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
     }
 
     public Restaurant createRestaurant(RestaurantRequest request) {
@@ -36,5 +36,26 @@ public class RestaurantService {
         );
 
         return restaurantRepository.save(restaurant);
+    }
+
+    public Restaurant updateRestaurant(Long id, RestaurantRequest request) {
+
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(() -> new RestaurantNotFoundException(id));
+
+        restaurant.setName(request.getName());
+        restaurant.setCuisine(request.getCuisine());
+        restaurant.setPriceRange(request.getPriceRange());
+
+        return restaurantRepository.save(restaurant);
+    }
+
+    public void deleteRestaurant(Long id) {
+
+        Restaurant restaurant = restaurantRepository.findById(id)
+                .orElseThrow(()
+                        -> new RestaurantNotFoundException(id));
+
+        restaurantRepository.delete(restaurant);
     }
 }
