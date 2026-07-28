@@ -2,6 +2,8 @@ package com.joseph.swipebites.controller;
 
 import java.util.List;
 
+import jakarta.validation.Valid;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -37,7 +39,7 @@ public class RestaurantController {
 
     @PostMapping
     public ResponseEntity<Restaurant> createRestaurant(
-            @RequestBody RestaurantRequest request) {
+            @Valid @RequestBody RestaurantRequest request) {
 
         Restaurant restaurant = restaurantService.createRestaurant(request);
 
