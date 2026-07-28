@@ -106,6 +106,15 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.flywaydb</groupId>
+				<artifactId>flyway-maven-plugin</artifactId>
+				<configuration>
+					<url>jdbc:postgresql://localhost:5432/swipebites</url>
+					<user>swipebites</user>
+					<password>password</password>
+				</configuration>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<executions>
