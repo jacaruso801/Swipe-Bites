@@ -21,19 +21,31 @@ public class DataLoader implements CommandLineRunner {
         if (restaurantRepository.count() == 0) {
 
             restaurantRepository.save(new Restaurant(
-                    "Mario's Pizza",
-                    "Italian",
-                    "$$"
+                    "El Rincon",
+                    "Mexican",
+                    "$"
             ));
 
             restaurantRepository.save(new Restaurant(
-                    "Sushi House",
+                    "Shogun",
                     "Japanese",
                     "$$$"
             ));
 
             restaurantRepository.save(new Restaurant(
-                    "Burger Barn",
+                    "Whiskey Biscuits",
+                    "American",
+                    "$"
+            ));
+
+            restaurantRepository.save(new Restaurant(
+                    "Kaz's BBQ",
+                    "BBQ",
+                    "$$"
+            ));
+
+            restaurantRepository.save(new Restaurant(
+                    "Chick-fil-a",
                     "American",
                     "$"
             ));

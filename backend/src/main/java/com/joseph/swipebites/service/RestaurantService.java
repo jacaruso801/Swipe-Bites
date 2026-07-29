@@ -1,6 +1,7 @@
 package com.joseph.swipebites.service;
 
 import java.util.List;
+import java.util.Random;
 
 import org.springframework.stereotype.Service;
 
@@ -25,6 +26,19 @@ public class RestaurantService {
     public Restaurant getRestaurantById(Long id) {
         return restaurantRepository.findById(id)
                 .orElseThrow(() -> new RestaurantNotFoundException(id));
+    }
+
+    public Restaurant getNextRestaurant() {
+
+        List<Restaurant> restaurants = restaurantRepository.findRestaurantsNotSwiped();
+
+        if (restaurants.isEmpty()) {
+            throw new RuntimeException("No restaurants available");
+        }
+
+        return restaurants.get(
+                new Random().nextInt(restaurants.size())
+        );
     }
 
     public Restaurant createRestaurant(RestaurantRequest request) {
