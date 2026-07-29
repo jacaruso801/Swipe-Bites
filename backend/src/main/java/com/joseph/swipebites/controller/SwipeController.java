@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joseph.swipebites.dto.SwipeRequest;
+import com.joseph.swipebites.dto.SwipeResponse;
 import com.joseph.swipebites.model.Swipe;
 import com.joseph.swipebites.service.SwipeService;
 
@@ -25,7 +26,7 @@ public class SwipeController {
     }
 
     @GetMapping
-    public List<Swipe> getAllSwipes() {
+    public List<SwipeResponse> getAllSwipes() {
         return swipeService.getAllSwipes();
     }
 
