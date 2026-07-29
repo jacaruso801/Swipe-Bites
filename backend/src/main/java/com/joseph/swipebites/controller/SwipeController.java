@@ -29,9 +29,16 @@ public class SwipeController {
     public Page<SwipeResponse> getAllSwipes(
             @RequestParam(required = false) SwipeDirection direction,
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size) {
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "createdAt") String sortBy,
+            @RequestParam(defaultValue = "desc") String directionOrder) {
 
-        return swipeService.getAllSwipes(direction, page, size);
+        return swipeService.getAllSwipes(
+                direction,
+                page,
+                size,
+                sortBy,
+                directionOrder);
     }
 
     @PostMapping

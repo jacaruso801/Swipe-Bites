@@ -3,6 +3,7 @@ package com.joseph.swipebites.service;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.dto.SwipeRequest;
@@ -40,9 +41,15 @@ public class SwipeService {
     public Page<SwipeResponse> getAllSwipes(
             SwipeDirection direction,
             int page,
-            int size) {
+            int size,
+            String sortBy,
+            String sortDirection) {
 
-        Pageable pageable = PageRequest.of(page, size);
+        Sort sort = sortDirection.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
 
         Page<Swipe> swipes;
 
