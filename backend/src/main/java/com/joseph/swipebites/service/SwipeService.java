@@ -1,5 +1,7 @@
 package com.joseph.swipebites.service;
 
+import java.util.Set;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -20,6 +22,11 @@ public class SwipeService {
 
     private final SwipeRepository swipeRepository;
     private final RestaurantRepository restaurantRepository;
+
+    private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
+            "createdAt",
+            "direction"
+    );
 
     public SwipeService(SwipeRepository swipeRepository, RestaurantRepository restaurantRepository) {
         this.swipeRepository = swipeRepository;
@@ -44,6 +51,10 @@ public class SwipeService {
             int size,
             String sortBy,
             String sortDirection) {
+
+        if (!ALLOWED_SORT_FIELDS.contains(sortBy)) {
+            throw new IllegalArgumentException("Invalid sort field: " + sortBy);
+        }
 
         Sort sort = sortDirection.equalsIgnoreCase("desc")
                 ? Sort.by(sortBy).descending()
