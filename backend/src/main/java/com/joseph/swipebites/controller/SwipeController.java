@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.joseph.swipebites.dto.SwipeRequest;
 import com.joseph.swipebites.dto.SwipeResponse;
-import com.joseph.swipebites.model.Swipe;
 import com.joseph.swipebites.service.SwipeService;
 
 import jakarta.validation.Valid;
@@ -31,7 +30,7 @@ public class SwipeController {
     }
 
     @PostMapping
-public Swipe createSwipe(@Valid @RequestBody SwipeRequest request) {
+public SwipeResponse createSwipe(@Valid @RequestBody SwipeRequest request) {
     return swipeService.createSwipe(request);
 }
 }
