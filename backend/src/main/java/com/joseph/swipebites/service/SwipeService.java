@@ -10,6 +10,7 @@ import com.joseph.swipebites.dto.SwipeResponse;
 import com.joseph.swipebites.exception.RestaurantNotFoundException;
 import com.joseph.swipebites.model.Restaurant;
 import com.joseph.swipebites.model.Swipe;
+import com.joseph.swipebites.model.SwipeDirection;
 import com.joseph.swipebites.repository.RestaurantRepository;
 import com.joseph.swipebites.repository.SwipeRepository;
 
@@ -36,10 +37,17 @@ public class SwipeService {
         );
     }
 
-    public List<SwipeResponse> getAllSwipes() {
+    public List<SwipeResponse> getAllSwipes(SwipeDirection direction) {
 
-        return swipeRepository.findAll()
-                .stream()
+        List<Swipe> swipes;
+
+        if (direction != null) {
+            swipes = swipeRepository.findByDirection(direction);
+        } else {
+            swipes = swipeRepository.findAll();
+        }
+
+        return swipes.stream()
                 .map(this::mapToResponse)
                 .collect(Collectors.toList());
     }

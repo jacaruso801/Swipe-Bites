@@ -6,10 +6,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.joseph.swipebites.dto.SwipeRequest;
 import com.joseph.swipebites.dto.SwipeResponse;
+import com.joseph.swipebites.model.SwipeDirection;
 import com.joseph.swipebites.service.SwipeService;
 
 import jakarta.validation.Valid;
@@ -25,12 +27,14 @@ public class SwipeController {
     }
 
     @GetMapping
-    public List<SwipeResponse> getAllSwipes() {
-        return swipeService.getAllSwipes();
+    public List<SwipeResponse> getAllSwipes(
+            @RequestParam(required = false) SwipeDirection direction) {
+
+        return swipeService.getAllSwipes(direction);
     }
 
     @PostMapping
-public SwipeResponse createSwipe(@Valid @RequestBody SwipeRequest request) {
-    return swipeService.createSwipe(request);
-}
+    public SwipeResponse createSwipe(@Valid @RequestBody SwipeRequest request) {
+        return swipeService.createSwipe(request);
+    }
 }
