@@ -1,7 +1,6 @@
 package com.joseph.swipebites.controller;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -27,10 +26,12 @@ public class SwipeController {
     }
 
     @GetMapping
-    public List<SwipeResponse> getAllSwipes(
-            @RequestParam(required = false) SwipeDirection direction) {
+    public Page<SwipeResponse> getAllSwipes(
+            @RequestParam(required = false) SwipeDirection direction,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
 
-        return swipeService.getAllSwipes(direction);
+        return swipeService.getAllSwipes(direction, page, size);
     }
 
     @PostMapping

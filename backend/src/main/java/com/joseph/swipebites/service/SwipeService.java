@@ -1,8 +1,8 @@
 package com.joseph.swipebites.service;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.dto.SwipeRequest;
@@ -37,19 +37,22 @@ public class SwipeService {
         );
     }
 
-    public List<SwipeResponse> getAllSwipes(SwipeDirection direction) {
+    public Page<SwipeResponse> getAllSwipes(
+            SwipeDirection direction,
+            int page,
+            int size) {
 
-        List<Swipe> swipes;
+        Pageable pageable = PageRequest.of(page, size);
+
+        Page<Swipe> swipes;
 
         if (direction != null) {
-            swipes = swipeRepository.findByDirection(direction);
+            swipes = swipeRepository.findByDirection(direction, pageable);
         } else {
-            swipes = swipeRepository.findAll();
+            swipes = swipeRepository.findAll(pageable);
         }
 
-        return swipes.stream()
-                .map(this::mapToResponse)
-                .collect(Collectors.toList());
+        return swipes.map(this::mapToResponse);
     }
 
     public SwipeResponse createSwipe(SwipeRequest request) {
