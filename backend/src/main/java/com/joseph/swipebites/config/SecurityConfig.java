@@ -19,11 +19,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
         http
-            .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/users").permitAll()
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests(auth -> auth
+                .requestMatchers(
+                        "/api/users",
+                        "/api/auth/login"
+                    ).permitAll()
                 .anyRequest().authenticated()
-            );
+                );
 
         return http.build();
     }
