@@ -1,0 +1,4 @@
+DELETE FROM swipes;
+
+ALTER TABLE swipes
+ALTER COLUMN user_id SET NOT NULL;

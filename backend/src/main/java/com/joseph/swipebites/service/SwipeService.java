@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.dto.SwipeRequest;
@@ -14,6 +16,7 @@ import com.joseph.swipebites.exception.RestaurantNotFoundException;
 import com.joseph.swipebites.model.Restaurant;
 import com.joseph.swipebites.model.Swipe;
 import com.joseph.swipebites.model.SwipeDirection;
+import com.joseph.swipebites.model.User;
 import com.joseph.swipebites.repository.RestaurantRepository;
 import com.joseph.swipebites.repository.SwipeRepository;
 
@@ -45,6 +48,14 @@ public class SwipeService {
         );
     }
 
+    private User getCurrentUser() {
+
+        Authentication authentication
+                = SecurityContextHolder.getContext().getAuthentication();
+
+        return (User) authentication.getPrincipal();
+    }
+
     public Page<SwipeResponse> getAllSwipes(
             SwipeDirection direction,
             int page,
@@ -62,12 +73,21 @@ public class SwipeService {
 
         Pageable pageable = PageRequest.of(page, size, sort);
 
+        User currentUser = getCurrentUser();
+
         Page<Swipe> swipes;
 
         if (direction != null) {
-            swipes = swipeRepository.findByDirection(direction, pageable);
+            swipes = swipeRepository.findByUserAndDirection(
+                    currentUser,
+                    direction,
+                    pageable
+            );
         } else {
-            swipes = swipeRepository.findAll(pageable);
+            swipes = swipeRepository.findByUser(
+                    currentUser,
+                    pageable
+            );
         }
 
         return swipes.map(this::mapToResponse);
@@ -78,7 +98,13 @@ public class SwipeService {
         Restaurant restaurant = restaurantRepository.findById(request.getRestaurantId())
                 .orElseThrow(() -> new RestaurantNotFoundException(request.getRestaurantId()));
 
-        Swipe swipe = new Swipe(restaurant, request.getDirection());
+        User currentUser = getCurrentUser();
+
+        Swipe swipe = new Swipe(
+                currentUser,
+                restaurant,
+                request.getDirection()
+        );
 
         Swipe savedSwipe = swipeRepository.save(swipe);
 

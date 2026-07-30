@@ -29,11 +29,16 @@ public class Swipe {
     @JoinColumn(name = "restaurant_id", nullable = false)
     private Restaurant restaurant;
 
+    @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
     protected Swipe() {
         // Required by JPA
     }
 
-    public Swipe(Restaurant restaurant, SwipeDirection direction) {
+    public Swipe(User user, Restaurant restaurant, SwipeDirection direction) {
+        this.user = user;
         this.restaurant = restaurant;
         this.direction = direction;
         this.createdAt = LocalDateTime.now();
@@ -55,11 +60,19 @@ public class Swipe {
         return restaurant;
     }
 
+    public User getUser() {
+        return user;
+    }
+
     public void setDirection(SwipeDirection direction) {
         this.direction = direction;
     }
 
     public void setRestaurant(Restaurant restaurant) {
         this.restaurant = restaurant;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 }
