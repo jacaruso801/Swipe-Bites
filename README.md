@@ -125,10 +125,10 @@ Areas of focus include:
 # 📈 Roadmap
 
 ## Phase 1
-- [ ] Project setup
-- [ ] Docker environment
-- [ ] Spring Boot API
-- [ ] PostgreSQL integration
+- [x] Project setup
+- [x] Docker environment
+- [x] Spring Boot API
+- [x] PostgreSQL integration
 - [ ] React frontend
 - [ ] User authentication
 
