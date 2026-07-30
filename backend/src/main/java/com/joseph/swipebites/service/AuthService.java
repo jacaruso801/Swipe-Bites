@@ -7,19 +7,23 @@ import com.joseph.swipebites.dto.AuthResponse;
 import com.joseph.swipebites.dto.LoginRequest;
 import com.joseph.swipebites.model.User;
 import com.joseph.swipebites.repository.UserRepository;
+import com.joseph.swipebites.security.JwtService;
 
 @Service
 public class AuthService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final JwtService jwtService;
 
     public AuthService(
             UserRepository userRepository,
-            PasswordEncoder passwordEncoder) {
+            PasswordEncoder passwordEncoder,
+            JwtService jwtService) {
 
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
     }
 
     public AuthResponse login(LoginRequest request) {
@@ -34,6 +38,8 @@ public class AuthService {
             throw new RuntimeException("Invalid credentials");
         }
 
-        return new AuthResponse("TEMP_TOKEN");
+        String token = jwtService.generateToken(user);
+
+        return new AuthResponse(token);
     }
 }
