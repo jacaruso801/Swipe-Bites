@@ -3,8 +3,10 @@ package com.joseph.swipebites.service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import org.springframework.stereotype.Service;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.dto.UserRequest;
 import com.joseph.swipebites.dto.UserResponse;
@@ -62,6 +64,16 @@ public class UserService {
         User savedUser = userRepository.save(user);
 
         return mapToResponse(savedUser);
+    }
+
+    public UserResponse getCurrentUser() {
+
+        Authentication authentication
+                = SecurityContextHolder.getContext().getAuthentication();
+
+        User user = (User) authentication.getPrincipal();
+
+        return mapToResponse(user);
     }
 
     private UserResponse mapToResponse(User user) {

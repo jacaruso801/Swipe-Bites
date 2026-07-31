@@ -1,8 +1,10 @@
 package com.joseph.swipebites.controller;
 
-import java.util.List;
-
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.joseph.swipebites.dto.UserRequest;
 import com.joseph.swipebites.dto.UserResponse;
@@ -20,14 +22,9 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping
-    public List<UserResponse> getAllUsers() {
-        return userService.getAllUsers();
-    }
-
-    @GetMapping("/{id}")
-    public UserResponse getUserById(@PathVariable Long id) {
-        return userService.getUserById(id);
+    @GetMapping("/me")
+    public UserResponse getCurrentUser() {
+        return userService.getCurrentUser();
     }
 
     @PostMapping
