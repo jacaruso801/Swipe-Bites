@@ -12,28 +12,38 @@ import org.springframework.stereotype.Service;
 
 import com.joseph.swipebites.dto.SwipeRequest;
 import com.joseph.swipebites.dto.SwipeResponse;
+import com.joseph.swipebites.exception.NoActiveSessionException;
 import com.joseph.swipebites.exception.RestaurantNotFoundException;
 import com.joseph.swipebites.model.Restaurant;
+import com.joseph.swipebites.model.SessionStatus;
 import com.joseph.swipebites.model.Swipe;
 import com.joseph.swipebites.model.SwipeDirection;
+import com.joseph.swipebites.model.SwipeSession;
 import com.joseph.swipebites.model.User;
 import com.joseph.swipebites.repository.RestaurantRepository;
 import com.joseph.swipebites.repository.SwipeRepository;
+import com.joseph.swipebites.repository.SwipeSessionRepository;
 
 @Service
 public class SwipeService {
 
     private final SwipeRepository swipeRepository;
     private final RestaurantRepository restaurantRepository;
+    private final SwipeSessionRepository swipeSessionRepository;
 
     private static final Set<String> ALLOWED_SORT_FIELDS = Set.of(
             "createdAt",
             "direction"
     );
 
-    public SwipeService(SwipeRepository swipeRepository, RestaurantRepository restaurantRepository) {
+    public SwipeService(
+            SwipeRepository swipeRepository,
+            RestaurantRepository restaurantRepository,
+            SwipeSessionRepository swipeSessionRepository) {
+
         this.swipeRepository = swipeRepository;
         this.restaurantRepository = restaurantRepository;
+        this.swipeSessionRepository = swipeSessionRepository;
     }
 
     private SwipeResponse mapToResponse(Swipe swipe) {
@@ -100,8 +110,13 @@ public class SwipeService {
 
         User currentUser = getCurrentUser();
 
+        SwipeSession activeSession = swipeSessionRepository
+                .findByUserAndStatus(currentUser, SessionStatus.ACTIVE)
+                .orElseThrow(() -> new NoActiveSessionException());
+
         Swipe swipe = new Swipe(
                 currentUser,
+                activeSession,
                 restaurant,
                 request.getDirection()
         );

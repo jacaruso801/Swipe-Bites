@@ -116,4 +116,18 @@ public class GlobalExceptionHandler {
 
         return new ResponseEntity<>(error, HttpStatus.CONFLICT);
     }
+
+    @ExceptionHandler(NoActiveSessionException.class)
+    public ResponseEntity<ApiError> handleNoActiveSession(
+            NoActiveSessionException ex) {
+
+        ApiError error = new ApiError(
+                Instant.now(),
+                HttpStatus.CONFLICT.value(),
+                ex.getMessage(),
+                Map.of()
+        );
+
+        return new ResponseEntity<>(error, HttpStatus.CONFLICT);
+    }
 }
